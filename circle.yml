@@ -10,7 +10,9 @@ machine:
 dependencies:
   cache_directories:
     - buildcache
+		- docker_cache
   pre:
+		- mkdir -p docker_cache
     - docker version && docker info
     - |
         if [[ ! -e buildcache/buildcache ]]; then
@@ -20,6 +22,8 @@ dependencies:
     - sudo install -m 0775 buildcache/buildcache /usr/bin
   override:
     - echo "test build cache"; buildcache
+    - docker build -t vikingco/buildcache:latest .
+		- docker save -o docker_cache/buildcache.tar "vikingco/docker-buildcache:latest";
   post:
     - echo 'done'
 
