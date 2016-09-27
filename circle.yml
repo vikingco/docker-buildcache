@@ -23,7 +23,7 @@ dependencies:
   override:
     - echo "test build cache"; buildcache
     - docker build -t vikingco/buildcache:latest .
-		- docker save -o docker_cache/buildcache.tar "vikingco/docker-buildcache:latest";
+    - docker save -o docker_cache/buildcache.tar "vikingco/docker-buildcache:latest"
   post:
     - echo 'done'
 
