@@ -6,20 +6,24 @@ machine:
   environment:
     # created this api at: https://circleci.com/gh/vikingco/mvne-platform/edit#api using type "all"
     derp: herp
+    GOPATH: /home/ubuntu/go
+    GOBIN: /home/ubuntu/go/bin
+    PATH: "$GOBIN:$PATH"
 
 dependencies:
   cache_directories:
     - buildcache
     - docker_cache
+    - /home/ubuntu/go
   pre:
     - mkdir -p docker_cache
+    - mkdir -p /home/ubuntu/go
     - docker version && docker info
     - |
-        if [[ ! -e buildcache/buildcache ]]; then
-          mkdir buildcache
-          wget -O buildcache/buildcache https://s3-eu-west-1.amazonaws.com/mobiliferoot/buildcache
+        rm buildcache/buildcache
+        if [[ ! -e $GOBIN/buildcache ]]; then
+          go get github.com/vikingco/buildcache/cmd/buildcache
         fi
-    - sudo install -m 0775 buildcache/buildcache /usr/bin
   override:
     - |
       if [[ -e docker_cache/cache.tar ]]; then
