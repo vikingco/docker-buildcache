@@ -1,0 +1,36 @@
+machine:
+  services:
+    # we want to test on the same database as production
+    #- mysql # We are using sqlite in memory right now
+    - docker
+  environment:
+    # created this api at: https://circleci.com/gh/vikingco/mvne-platform/edit#api using type "all"
+    derp: herp
+
+dependencies:
+  cache_directories:
+    - buildcache
+  pre:
+    - docker version && docker info
+    - |
+        if [[ ! -e buildcache/buildcache ]]; then
+          mkdir buildcache
+          wget -O buildcache/buildcache https://s3-eu-west-1.amazonaws.com/mobiliferoot/buildcache
+        fi
+    - sudo install -m 0775 buildcache/buildcache /usr/bin
+  override:
+    - echo "test build cache"; buildcache
+  post:
+    - echo 'done'
+
+test:
+  override:
+    - echo 'override test'
+  post:
+    - echo 'post test'
+
+deployment:
+  default:
+    branch: /.*/
+    commands:
+      - echo 'deploy'
