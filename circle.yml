@@ -21,11 +21,15 @@ dependencies:
         fi
     - sudo install -m 0775 buildcache/buildcache /usr/bin
   override:
+    - |
+      if [[ -e docker_cache/cache.tar ]]; then
+        echo "Loading the image cache (docker cache)"
+        docker load -i docker_cache/cache.tar
+      fi
     - echo "test build cache"
     - buildcache
     - docker build -t vikingco/docker-buildcache:latest .
     - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
-    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
   post:
     - echo 'done'
 
