@@ -1,4 +1,6 @@
 machine:
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
   services:
     # we want to test on the same database as production
     #- mysql # We are using sqlite in memory right now
@@ -24,7 +26,8 @@ dependencies:
     - echo "test build cache"
     - buildcache
     - docker build -t vikingco/docker-buildcache:latest .
-    - docker save -o docker_cache/buildcache.tar "vikingco/docker-buildcache:latest"
+    - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
+    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
   post:
     - echo 'done'
 
