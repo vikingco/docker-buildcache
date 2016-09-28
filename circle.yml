@@ -6,7 +6,7 @@ dependencies:
   cache_directories:
     - "~/docker"
   override:
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar && echo 'docker load'; fi
     - docker build -t vikingco/docker-buildcache:latest .
     - mkdir -p ~/docker; docker save vikingco/docker-buildcache:latest > ~/docker/image.tar
 
@@ -15,3 +15,9 @@ deployment:
     branch: /.*/
     commands:
       - echo 'deploy'
+
+test:
+  override:
+      - echo 'override test'
+  post:
+      - echo 'post test'
