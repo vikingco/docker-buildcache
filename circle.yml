@@ -3,15 +3,22 @@ machine:
     - docker
 
 dependencies:
+  cache_directories:
+    - /home/ubuntu/lala_cache
+  pre:
+    - mkdir -p /home/ubuntu/lala_cache
   override:
-    - docker pull enermis/docker-cache-test:latest || echo "no cache to load"
-    - bin/build.sh
+    - ls /home/ubuntu/lala_cache
+    - |
+      if [[ ! -e /home/ubuntu/lala_cache/zero ]]; then
+        dd if=/dev/zero of=/home/ubuntu/lala_cache/zero bs=1M count=10240 conv=fsync
+      fi
 
 deployment:
   default:
     branch: /.*/
     commands:
-      - bin/push.sh
+        - echo 'deploy'
 
 test:
   override:
