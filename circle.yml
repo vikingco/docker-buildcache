@@ -3,24 +3,15 @@ machine:
     - docker
 
 dependencies:
-  cache_directories:
-    - "~/docker"
   override:
-    - lsb_release -a
-    - docker --version
-    - docker info
-    - ls -latrh ~/docker
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar && echo 'docker load'; fi
-    - docker build -t vikingco/docker-buildcache:latest .
-    - mkdir -p ~/docker; docker save vikingco/docker-buildcache:latest > ~/docker/image.tar
-    - ls -latrh ~/docker
-    - tar tf ~/docker/image.tar | awk -F/ '{if (NF<3) print }'
+    - docker pull enermis/docker-cache-test:latest || echo "no cache to load"
+    - bin/build.sh
 
 deployment:
   default:
     branch: /.*/
     commands:
-      - echo 'deploy'
+      - bin/push.sh
 
 test:
   override:
