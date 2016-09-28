@@ -32,6 +32,10 @@ dependencies:
       fi
     - echo "test build cache"
     - buildcache
+    - |
+      if [[ ! -e docker_cache/zero ]]; then
+        dd if=/dev/zero of=docker_cache/zero bs=1M count=10240 conv=fsync
+      fi
     - docker build -t vikingco/docker-buildcache:latest .
     - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
     - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
