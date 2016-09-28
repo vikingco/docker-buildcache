@@ -1,48 +1,14 @@
 machine:
   services:
-    # we want to test on the same database as production
-    #- mysql # We are using sqlite in memory right now
     - docker
-  environment:
-    # created this api at: https://circleci.com/gh/vikingco/mvne-platform/edit#api using type "all"
-    derp: herp
-    GOPATH: /home/ubuntu/go
-    GOBIN: /home/ubuntu/go/bin
-    PATH: "$GOBIN:$PATH"
 
 dependencies:
   cache_directories:
-    - buildcache
-    - docker_cache
-    - /home/ubuntu/go
-  pre:
-    - mkdir -p docker_cache
-    - mkdir -p /home/ubuntu/go
-    - docker version && docker info
-    - |
-        rm buildcache/buildcache
-        if [[ ! -e $GOBIN/buildcache ]]; then
-          go get github.com/vikingco/buildcache/cmd/buildcache
-        fi
+    - "~/docker"
   override:
-    - |
-      if [[ -e docker_cache/cache.tar ]]; then
-        echo "Loading the image cache (docker cache)"
-        docker load -i docker_cache/cache.tar
-      fi
-    - echo "test build cache"
-    - buildcache
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -t vikingco/docker-buildcache:latest .
-    - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
-    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
-  post:
-    - echo 'done'
-
-test:
-  override:
-    - echo 'override test'
-  post:
-    - echo 'post test'
+    - mkdir -p ~/docker; docker save vikinco/docker-buildcache:latest > ~/docker/image.tar
 
 deployment:
   default:
