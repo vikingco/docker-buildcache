@@ -8,7 +8,7 @@ dependencies:
   override:
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -t vikingco/docker-buildcache:latest .
-    - mkdir -p ~/docker; docker save vikinco/docker-buildcache:latest > ~/docker/image.tar
+    - mkdir -p ~/docker; docker save vikingco/docker-buildcache:latest > ~/docker/image.tar
 
 deployment:
   default:
