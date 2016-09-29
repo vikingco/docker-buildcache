@@ -12,33 +12,14 @@ machine:
 
 dependencies:
   cache_directories:
-    - buildcache
-    - docker_cache
-    - /home/ubuntu/go
+    - /home/ubuntu/build_cache
   pre:
-    - mkdir -p docker_cache
-    - mkdir -p /home/ubuntu/go
-    - docker version && docker info
-    - |
-        rm buildcache/buildcache
-        if [[ ! -e $GOBIN/buildcache ]]; then
-          go get github.com/vikingco/buildcache/cmd/buildcache
-        fi
+    - mkdir -p /home/ubuntu/build_cache
   override:
-    - |
-      if [[ -e docker_cache/cache.tar ]]; then
-        echo "Loading the image cache (docker cache)"
-        docker load -i docker_cache/cache.tar
-      fi
-    - echo "test build cache"
-    - buildcache
-    - |
-      if [[ ! -e docker_cache/zero ]]; then
-        dd if=/dev/zero of=docker_cache/zero bs=1M count=10240 conv=fsync
-      fi
-    - docker build -t vikingco/docker-buildcache:latest .
-    - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
-    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
+    - ls -l /home/ubuntu/build_cache | wc -l 
+    - seq 10 | xargs -I{} -P1 -n1 mktemp -p /home/ubuntu/build_cache/.
+    - ls -l /home/ubuntu/build_cache | wc -l 
+
   post:
     - echo 'done'
 
