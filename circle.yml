@@ -12,13 +12,15 @@ machine:
 
 dependencies:
   cache_directories:
-    - /home/ubuntu/build_cache
+    - /home/ubuntu/build_cache2
   pre:
-    - mkdir -p /home/ubuntu/build_cache
+    - mkdir -p /home/ubuntu/build_cache2
   override:
     - ls -l /home/ubuntu/build_cache | wc -l 
-    - seq 10 | xargs -I{} -P1 -n1 mktemp -p /home/ubuntu/build_cache/.
+    - ls -l /home/ubuntu/build_cache2 | wc -l 
+    - seq 10 | xargs -I{} -P1 -n1 mktemp -p /home/ubuntu/build_cache2/.
     - ls -l /home/ubuntu/build_cache | wc -l 
+    - ls -l /home/ubuntu/build_cache2 | wc -l 
 
   post:
     - echo 'done'
