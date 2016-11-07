@@ -25,21 +25,8 @@ dependencies:
           go get github.com/vikingco/buildcache/cmd/buildcache
         fi
   override:
-    - |
-      if [[ -e docker_cache/cache.tar ]]; then
-        echo "Loading the image cache (docker cache)"
-        docker load -i docker_cache/cache.tar
-      fi
-    - echo "test build cache"
-    - buildcache
-    - |
-      if [[ ! -e docker_cache/zero ]]; then
-        dd if=/dev/zero of=docker_cache/zero bs=1M count=10240 conv=fsync
-      fi
-    - docker build -t vikingco/docker-buildcache:latest .
-    - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
     - docker build -f Dockerfile.ci -t vikingco/docker-buildcache:latest .
-    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
+    - echo 'test' > $CIRCLE_ARTIFACTS/output.txt
   post:
     - echo 'done'
 
