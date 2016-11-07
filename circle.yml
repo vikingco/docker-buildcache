@@ -38,9 +38,8 @@ dependencies:
       fi
     - docker build -t vikingco/docker-buildcache:latest .
     - docker save -o docker_cache/cache.tar    vikingco/docker-buildcache:latest
-    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
-
     - docker build -f Dockerfile.ci -t vikingco/docker-buildcache:latest .
+    - buildcache save -o docker_cache/meta.tar vikingco/docker-buildcache:latest
   post:
     - echo 'done'
 
