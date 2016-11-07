@@ -25,8 +25,8 @@ dependencies:
           go get github.com/vikingco/buildcache/cmd/buildcache
         fi
   override:
-    - docker build -f Dockerfile.ci -t vikingco/docker-buildcache:latest .
     - echo 'test' > $CIRCLE_ARTIFACTS/output.txt
+    - docker build -f Dockerfile.ci -t vikingco/docker-buildcache:latest .
   post:
     - echo 'done'
 
