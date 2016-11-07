@@ -27,7 +27,6 @@ dependencies:
   override:
     - echo 'test' > $CIRCLE_ARTIFACTS/output.txt
     - mkdir $CIRCLE_ARTIFACTS/json_output
-    - docker build -f Dockerfile.ci -t vikingco/docker-buildcache:latest .
   post:
     - echo 'done'
 
@@ -36,6 +35,8 @@ test:
     - echo 'override test'
   post:
     - echo 'post test'
+    - echo 'test' > $CIRCLE_ARTIFACTS/output.txt
+    - mkdir $CIRCLE_ARTIFACTS/json_output
 
 deployment:
   default:
