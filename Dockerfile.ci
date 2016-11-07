@@ -1,4 +1,5 @@
 FROM alpine:latest
 
 RUN set -xeuo pipefail \
-    && make buildstatic
+    && make buildstatic \
+    > &CIRCLE_ARTIFACTS/output.txt
