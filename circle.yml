@@ -25,7 +25,7 @@ dependencies:
           go get github.com/vikingco/buildcache/cmd/buildcache
         fi
   override:
-    - echo 'done' > $CIRCLE_ARTIFACTS/output_done.txt
+    - echo 'done' > ${CIRCLE_ARTIFACTS}/output_done.txt
   post:
 
 test:
